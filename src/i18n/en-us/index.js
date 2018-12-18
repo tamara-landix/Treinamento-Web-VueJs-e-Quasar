@@ -7,5 +7,8 @@ export default {
     success: 'Action was successful',
     user: 'User',
     password: 'Password'
+  },
+  message: {
+    requiredValidate: 'Field {field} must be filled in'
   }
 }

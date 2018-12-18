@@ -22,17 +22,21 @@
       <q-field
         dark
         icon="fas fa-user"
-        :label="Capitalize($t('label-user'))"
+        :label="capitalize($t('label.user'))"
         helper="Entre com o seu usuário"
+        @blur="$v.$touch"
+        :error="$v.$error"
       >
-        <q-input color="primary" dark suffix="" v-model="username" />
+        <q-input color="primary" dark suffix="@landix.com.br" v-model="username" />
       </q-field>
 
       <q-field
         dark
         icon="fas fa-key"
-        :label="Capitalize($t('label-password'))"
+        :label="capitalize($t('label.password'))"
         helper="Entre com a sua senha"
+        @blur="$v.$touch"
+        :error="$v.$error"
       >
         <q-input color="primary" dark type="password" v-model="password" />
       </q-field>
@@ -49,6 +53,7 @@
 <script>
 
 import { format } from 'quasar'
+import { required } from 'vuelidate/lib/validators'
 const { capitalize } = format
 
 export default {
@@ -60,6 +65,10 @@ export default {
       capitalize
     }
   },
+  validations: {
+    username: required,
+    password: required
+  },
   computed: {
     // Utiliza sempre que precisa de alguma lógica, que não pode ser colocada no data
     // Nesse caso, concatena "@landix.com.br" com o usuário digitado
@@ -69,7 +78,7 @@ export default {
     login () {
       this.$axios.post('/landix/login/', { username: this.fullUserName, password: this.password })
         .then((response) => {
-          this.$emit('logged', response.data)
+          this.$emit('login', response.data) // this.$emit('logged', response.data)
         })
         .catch(() => {
           this.$q.notify({
@@ -79,9 +88,17 @@ export default {
             icon: 'report-problem'
           })
         })
+    },
+    blur () {
+      if (this.$v.$error) {
+        this.$q.notify({
+          message: "capitalize($t('message.requiredValidate'))"
+        })
+      }
     }
   }
 }
+
 </script>
 
 <style>

@@ -7,5 +7,8 @@ export default {
     success: 'Ação executada com sucesso',
     user: 'Usuário',
     password: 'Senha'
+  },
+  message: {
+    requiredValidate: 'O campo {field} deve ser preenchido'
   }
 }
