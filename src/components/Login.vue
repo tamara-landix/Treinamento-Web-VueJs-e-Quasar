@@ -90,6 +90,7 @@ export default {
       this.$axios.post('/landix/login/', { username: this.fullUserName, password: this.password })
         .then((response) => {
           this.$emit('logged', response.data)
+          this.$router.push('index')
         })
         .catch(() => {
           this.$q.notify({
