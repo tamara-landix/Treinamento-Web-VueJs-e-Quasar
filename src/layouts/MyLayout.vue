@@ -1,8 +1,8 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh Lpr lFf">
     <q-layout-header>
       <q-toolbar
-        color="primary"
+        color="dark"
         :glossy="$q.theme === 'mat'"
         :inverted="$q.theme === 'ios'"
       >
@@ -17,41 +17,62 @@
         </q-btn>
 
         <q-toolbar-title>
-          Quasar App
-          <div slot="subtitle">Running on Quasar v{{ $q.version }}</div>
+           <img src="../statics/icon.png" width="30dp"/>
         </q-toolbar-title>
+
+        <q-tabs
+          color="dark"
+          :glossy="$q.theme === 'mat'"
+          :inverted="$q.theme === 'ios'"
+        >
+          <q-route-tab
+            slot="title"
+            icon="fas fa-users"
+            to="/users"
+            replace
+            hide="icon"
+            :label="capitalize($t('label.user'))"
+          />
+          <q-route-tab
+            slot="title"
+            icon="fas fa-code-branch"
+            to="/branches"
+            replace
+            hide="icon"
+            :label="capitalize($t('label.branch'))"
+          />
+        </q-tabs>
+
+        <div>
+          <q-btn-dropdown :label="$q.localStorage.get.item('user').name" >
+            <q-list link>
+              <q-item>
+                <q-item-main @click.native="logout">
+                  <q-item-tile label>Logout</q-item-tile>
+                </q-item-main>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+        </div>
       </q-toolbar>
     </q-layout-header>
 
     <q-layout-drawer
       v-model="leftDrawerOpen"
-      :content-class="$q.theme === 'mat' ? 'bg-grey-2' : null"
+      :content-class="$q.theme == 'mat' ? 'bg-gray-2' : null"
     >
       <q-list
         no-border
         link
-        inset-delimiter
+        insert-delimiter
       >
-        <q-list-header>Essential Links</q-list-header>
-        <q-item @click.native="openURL('http://quasar-framework.org')">
-          <q-item-side icon="school" />
-          <q-item-main label="Docs" sublabel="quasar-framework.org" />
+        <q-item>
+          <q-item-side icon="fas fa-users" />
+          <q-item-main :label="capitalize($t('label.user'))" />
         </q-item>
-        <q-item @click.native="openURL('https://github.com/quasarframework/')">
-          <q-item-side icon="code" />
-          <q-item-main label="GitHub" sublabel="github.com/quasarframework" />
-        </q-item>
-        <q-item @click.native="openURL('https://discord.gg/5TDhbDg')">
-          <q-item-side icon="chat" />
-          <q-item-main label="Discord Chat Channel" sublabel="https://discord.gg/5TDhbDg" />
-        </q-item>
-        <q-item @click.native="openURL('http://forum.quasar-framework.org')">
-          <q-item-side icon="record_voice_over" />
-          <q-item-main label="Forum" sublabel="forum.quasar-framework.org" />
-        </q-item>
-        <q-item @click.native="openURL('https://twitter.com/quasarframework')">
-          <q-item-side icon="rss feed" />
-          <q-item-main label="Twitter" sublabel="@quasarframework" />
+        <q-item>
+          <q-item-side icon="fas fa-code-branch" />
+          <q-item-main :label="capitalize($t('label.branch'))" />
         </q-item>
       </q-list>
     </q-layout-drawer>
@@ -63,13 +84,15 @@
 </template>
 
 <script>
-import { openURL } from 'quasar'
+import { openURL, format } from 'quasar'
+const { capitalize } = format
 
 export default {
   name: 'MyLayout',
   data () {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop
+      leftDrawerOpen: this.$q.platform.is.desktop,
+      capitalize
     }
   },
   methods: {

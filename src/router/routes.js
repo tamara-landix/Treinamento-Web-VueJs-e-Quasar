@@ -14,10 +14,10 @@ const routes = [
     ]
   },
   {
-    path: '/login',
+    path: '/',
     component: () => import('pages/Login.vue'),
     props: (route) => ({
-      //
+      redirect: route.query.redirect
     })
   }
 ]

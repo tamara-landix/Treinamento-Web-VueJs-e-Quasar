@@ -6,6 +6,11 @@ export default {
     failed: 'Ação inválida',
     success: 'Ação executada com sucesso',
     user: 'Usuário',
-    password: 'Senha'
+    password: 'Senha',
+    branch: 'Braço'
+  },
+  message: {
+    requiredValidate: 'O campo {field} deve ser preenchido',
+    reviewField: 'Confira o preenchimento dos campos'
   }
 }
