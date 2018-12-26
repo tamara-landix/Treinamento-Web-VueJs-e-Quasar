@@ -6,6 +6,11 @@ export default {
     failed: 'Action failed',
     success: 'Action was successful',
     user: 'User',
-    password: 'Password'
+    password: 'Password',
+    branch: 'Branch'
+  },
+  message: {
+    requiredValidate: 'Field {field} must be filled in',
+    reviewField: 'Review fields'
   }
 }

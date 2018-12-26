@@ -2,6 +2,13 @@
 const routes = [
   {
     path: '/',
+    component: () => import('pages/Login.vue'),
+    props: (route) => ({
+      redirect: route.query.redirect
+    })
+  },
+  {
+    path: '/index',
     component: () => import('layouts/MyLayout.vue'),
     children: [
       {
@@ -10,15 +17,16 @@ const routes = [
         meta: {
           requiresAuth: true
         }
+      },
+      {
+        name: 'users',
+        path: '/users',
+        component: () => import('pages/Users.vue'),
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
-  },
-  {
-    path: '/login',
-    component: () => import('pages/Login.vue'),
-    props: (route) => ({
-      //
-    })
   }
 ]
 
