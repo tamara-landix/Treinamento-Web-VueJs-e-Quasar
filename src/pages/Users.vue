@@ -9,7 +9,7 @@
       :pagination.sync="serverPagination"
       :loading="loading"
       @request="request"
-    />
+    >
       <template slot="top-left" slot-scope="props">
         <q-search hide-underline float-label="Nome" placeholder=" " v-model="filterName" @input="filterTable" />
         <q-search hide-underline float-label="LDAP UID" placeholder=" " v-model="filterLdapUid" @input="filterTable" />
@@ -27,70 +27,74 @@
           :icon="props.row.active ? 'check' : 'close'"
           :color="props.row.active ? 'positive' : 'negative'"
           >
-            {{ props.row.active ? "Sim" : "Não" }}
+            {{ props.row.active ? 'Sim' : 'Não' }}
           </q-chip>
         </q-td>
       </q-tr>
-      <template slot="top-right" slot-scope="props">
-        <q-search hide-underline v-model="filter"/>
-      </template>
+    </q-table>
   </q-page>
 </template>
 
 <script>
 export default {
-  name: 'Users',
-  data: () => ({
-    loading: false,
-    filter: {},
-    serverPagination: {
-      page: 1,
-      rowNumber: undefined
-    },
-    serverData: [],
-    columns: [
-      {
-        name: 'name',
-        required: true,
-        label: 'Nome',
-        align: 'left',
-        field: 'name',
-        sortable: true
+  name: 'User',
+  data () {
+    return {
+      filterName: undefined,
+      filterLdapUid: undefined,
+      filterActive: '',
+      loading: false,
+      filter: {},
+      serverPagination: {
+        page: 1,
+        rowsNumber: undefined,
+        rowsPerPage: 10
       },
-      {
-        name: 'email',
-        required: true,
-        label: 'E-mail',
-        align: 'left',
-        field: 'email',
-        sortable: true
-      },
-      {
-        name: 'ldap_uid',
-        required: true,
-        label: 'LDAP UID',
-        align: 'left',
-        field: 'ldap_uid',
-        sortable: true
-      },
-      {
-        name: 'created',
-        required: true,
-        label: 'Data de criação',
-        align: 'left',
-        field: 'created',
-        sortable: true
-      },
-      {
-        name: 'active',
-        required: true,
-        label: 'Ativo',
-        align: 'left',
-        field: 'active',
-        sortable: true
-      }
-    ]
-  }),
+      serverData: [],
+      columns: [
+        {
+          name: 'name',
+          required: true,
+          label: 'Nome',
+          align: 'left',
+          field: 'name',
+          sortable: true
+        },
+        {
+          name: 'email',
+          required: true,
+          label: 'E-mail',
+          align: 'left',
+          field: 'email',
+          sortable: true
+        },
+        {
+          name: 'ldap_uid',
+          required: true,
+          label: 'LDAP UID',
+          align: 'left',
+          field: 'ldap_uid',
+          sortable: true
+        },
+        {
+          name: 'created',
+          required: true,
+          label: 'Data de criação',
+          align: 'left',
+          field: 'created',
+          sortable: true
+        },
+        {
+          name: 'active',
+          required: true,
+          label: 'Ativo',
+          align: 'left',
+          field: 'active',
+          sortable: true
+        }
+      ]
+    }
+  },
   mounted () {
     this.request({
       pagination: this.serverPagination,
@@ -106,12 +110,14 @@ export default {
         .get(`/landix/user/`, { params: {
           limit: pagination.rowsPerPage,
           offset: (pagination.page - 1) * pagination.rowsPerPage,
-          name__icontains: filter,
-          ordering: pagination.sortBy ? (pagination.descending ? '-' : '') + pagination.sortBy : undefined
+          name__icontains: filter ? filter.name : undefined,
+          ldap_uid: filter ? filter.ldapUid : undefined,
+          ordering: pagination.sortBy ? (pagination.descending ? '-' : '') + pagination.sortBy : undefined,
+          active: filter ? filter.active : undefined
         } })
         .then(({ data }) => {
           this.serverPagination = pagination
-          this.serverPagination.rowNumber = data.count
+          this.serverPagination.rowsNumber = data.count
           this.serverData = data.results
           this.loading = false
         })

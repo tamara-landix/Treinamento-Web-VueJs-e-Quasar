@@ -27,7 +27,7 @@
         :error="$v.username.$error"
         :error-label="`* ${capitalize($t('message.requiredValidate', { field: $t('label.user') }))}`"
       >
-        <q-input color="primary" dark suffix="@landix.com.br" v-model="username" @blur="$v.username.$touch"/>
+        <q-input color="primary" dark suffix="@landix.com.br" v-model="username" @blur="$v.username.$touch" @submit="login"/>
       </q-field>
 
       <q-field
@@ -38,7 +38,7 @@
         :error="$v.password.$error"
         :error-label="`* ${capitalize($t('message.requiredValidate', { field: $t('label.password') }))}`"
       >
-        <q-input color="primary" dark type="password" v-model="password" @blur="$v.password.$touch"/>
+        <q-input color="primary" dark type="password" v-model="password" @blur="$v.password.$touch" @submit="login"/>
       </q-field>
 
       <div>
@@ -85,6 +85,7 @@ export default {
           message: this.capitalize(this.$t('message.reviewField')),
           icon: 'report_problem'
         })
+        return
       }
 
       this.$axios.post('/landix/login/', { username: this.fullUserName, password: this.password })

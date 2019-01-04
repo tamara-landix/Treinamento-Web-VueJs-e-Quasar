@@ -35,7 +35,6 @@
             replace
             hide="icon"
             :label="capitalize($t('label.user'))"
-            @click.native="users"
           />
           <q-route-tab
             slot="title"
@@ -63,18 +62,18 @@
 
     <q-layout-drawer
       v-model="leftDrawerOpen"
-      :content-class="$q.theme == 'mat' ? 'bg-gray-2' : null"
+      :content-class="$q.theme === 'mat' ? 'bg-grey-2' : null"
     >
       <q-list
         no-border
         link
-        insert-delimiter
+        inset-delimiter
       >
-        <q-item>
+        <q-item to="/users">
           <q-item-side icon="fas fa-users" />
           <q-item-main :label="capitalize($t('label.user'))" />
         </q-item>
-        <q-item>
+        <q-item to="/branches">
           <q-item-side icon="fas fa-code-branch" />
           <q-item-main :label="capitalize($t('label.branch'))" />
         </q-item>
@@ -88,7 +87,7 @@
 </template>
 
 <script>
-import { openURL, format } from 'quasar'
+import { format } from 'quasar'
 const { capitalize } = format
 
 export default {
@@ -100,9 +99,20 @@ export default {
     }
   },
   methods: {
-    openURL,
-    users () {
-      this.$router.push('users')
+    logout () {
+      this.$axios.post('/landix/logout/')
+        .then((response) => {
+          this.$q.localStorage.remove('user')
+          this.$router.push('/')
+        })
+        .catch(() => {
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            icon: 'report_problem',
+            message: 'Não foi possível realizar o logout!'
+          })
+        })
     }
   }
 }

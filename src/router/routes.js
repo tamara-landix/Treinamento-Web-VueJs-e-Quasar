@@ -25,6 +25,14 @@ const routes = [
         meta: {
           requiresAuth: true
         }
+      },
+      {
+        name: 'branches',
+        path: '/branches',
+        component: () => import('pages/Branches.vue'),
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
   }

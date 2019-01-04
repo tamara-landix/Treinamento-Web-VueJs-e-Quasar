@@ -14,7 +14,7 @@ export default {
   },
   props: ['redirect'],
   methods: {
-    saveUser: function (user) {
+    saveUser (user) {
       this.$q.localStorage.set('user', user)
       this.$router.push(this.redirect)
     }
